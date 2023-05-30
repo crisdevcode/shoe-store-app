@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shoe_store/models/sneaker_model.dart';
+import 'package:shoe_store/services/helper.dart';
 import 'package:shoe_store/views/shared/app_style.dart';
-import 'package:shoe_store/views/shared/product_card.dart';
+import 'package:shoe_store/views/shared/home_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +14,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late final TabController _tabController = TabController(length: 3, vsync: this);
+
+  late Future<List<Sneaker>> _maleList;
+  late Future<List<Sneaker>> _femaleList;
+  late Future<List<Sneaker>> _kidsList;
+
+
+  void getMale() {
+    _maleList = Helper().getMaleSneakers();
+  }
+
+  void getFemale() {
+    _femaleList = Helper().getFemaleSneakers();
+  }
+
+  void getKids() {
+    _kidsList = Helper().getKidsSneakers();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMale();
+    getFemale();
+    getKids();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,97 +102,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.405,
-                          child: ListView.builder(
-                            itemCount: 6,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return const ProductCard(
-                                price: '\$20.00', 
-                                category: 'Men Shoes', 
-                                id: '1', 
-                                name: 'Adidas NMD Runner', 
-                                image: 'https://d326fntlu7tb1e.cloudfront.net/uploads/58282ea3-b815-4d26-9f4f-382aa62f67cf-HP5404_a1.webp'
-                              );
-                            },
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Padding( 
-                              padding: const EdgeInsets.fromLTRB(12, 20, 12, 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Latest Shoes',
-                                    style: appStyle(24, Colors.black, FontWeight.bold),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Show All',
-                                        style: appStyle(22, Colors.black, FontWeight.w500),
-                                      ),
-                                      const Icon(Icons.play_arrow, size: 30)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.13,
-                          child: ListView.builder(
-                            itemCount: 6,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        spreadRadius: 1,
-                                        blurRadius: 0.8,
-                                        offset: Offset(0, 1)
-                                      )
-                                    ]
-                                  ),
-                                  height: MediaQuery.of(context).size.height * 0.12,
-                                  width: MediaQuery.of(context).size.width * 0.28,
-                                  child: const Image(
-                                    image: NetworkImage('https://d326fntlu7tb1e.cloudfront.net/uploads/58282ea3-b815-4d26-9f4f-382aa62f67cf-HP5404_a1.webp')
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                    HomeWidget(
+                      productList: _maleList
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.405,
-                          color: Colors.amber,
-                        )
-                      ],
+                    HomeWidget(
+                      productList: _femaleList
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.405,
-                          color: Colors.amber,
-                        )
-                      ],
+                     HomeWidget(
+                      productList: _kidsList
                     ),
                   ],
                 ),

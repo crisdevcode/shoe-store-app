@@ -91,13 +91,13 @@ class _ProductCardState extends State<ProductCard> {
                   children: [
                     Text(
                       widget.price,
-                      style: appStyle(28, Colors.black, FontWeight.w600)
+                      style: appStyle(25, Colors.black, FontWeight.w600)
                     ),
                     Row(
                       children: [
                         Text(
                           'Colors',
-                          style: appStyle(18, Colors.grey, FontWeight.w500),
+                          style: appStyle(16, Colors.grey, FontWeight.w500),
                         ),
                         const SizedBox(width: 5),
                         ChoiceChip(

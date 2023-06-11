@@ -53,7 +53,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               height: MediaQuery.of(context).size.height * 0.4,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/top_image.png')
+                  image: AssetImage('assets/images/top_image.png'),
+                  fit: BoxFit.fill
                 )
               ),
               child: Container(
@@ -103,13 +104,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   controller: _tabController,
                   children: [
                     HomeWidget(
-                      productList: _maleList
+                      productList: _maleList,
+                      tabIndex: 0,
                     ),
                     HomeWidget(
-                      productList: _femaleList
+                      productList: _femaleList,
+                      tabIndex: 1,
                     ),
                      HomeWidget(
-                      productList: _kidsList
+                      productList: _kidsList,
+                      tabIndex: 2,
                     ),
                   ],
                 ),

@@ -3,16 +3,18 @@ import 'package:shoe_store/models/sneaker_model.dart';
 import 'package:shoe_store/views/shared/app_style.dart';
 import 'package:shoe_store/views/shared/new_shoes.dart';
 import 'package:shoe_store/views/shared/product_card.dart';
+import 'package:shoe_store/views/ui/product_by_category_screen.dart';
 
 class HomeWidget extends StatelessWidget {
 
   final Future<List<Sneaker>> _productList;
+  final int tabIndex;
 
   const HomeWidget({
     super.key,
-    required Future<List<Sneaker>> productList,
+    required Future<List<Sneaker>> productList, 
+    required this.tabIndex,
   }) : _productList = productList;
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +62,26 @@ class HomeWidget extends StatelessWidget {
                     'Latest Shoes',
                     style: appStyle(24, Colors.black, FontWeight.bold),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Show All',
-                        style: appStyle(22, Colors.black, FontWeight.w500),
-                      ),
-                      const Icon(Icons.play_arrow, size: 30)
-                    ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductByCategoryScreen(
+                            tabIndex: tabIndex
+                          ),
+                        )
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'Show All',
+                          style: appStyle(22, Colors.black, FontWeight.w500),
+                        ),
+                        const Icon(Icons.play_arrow, size: 30)
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -76,7 +90,7 @@ class HomeWidget extends StatelessWidget {
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.13,
-          child: FutureBuilder(
+          child: FutureBuilder<List<Sneaker>>(
             future: _productList,
             builder: ((context, snapshot) {
               if(snapshot.connectionState == ConnectionState.waiting) {
